@@ -1,6 +1,10 @@
 package com.bibliotech.service;
 
 import com.bibliotech.exception.BibliotecaException;
+import com.bibliotech.exception.LimitePrestamosException;
+import com.bibliotech.exception.RecursoNoDisponibleException;
+import com.bibliotech.exception.RecursoNoEncontradoException;
+import com.bibliotech.exception.SocioNoEncontradoException;
 import com.bibliotech.model.Prestamo;
 import com.bibliotech.model.Recurso;
 import com.bibliotech.model.Socio;
@@ -27,12 +31,12 @@ public class PrestamoService {
     public Prestamo realizarPrestamo(String isbn, String dni) throws BibliotecaException {
         Optional<Recurso> recursoOpt = recursoRepo.buscarPorId(isbn);
         if (recursoOpt.isEmpty()) {
-            throw new BibliotecaException("Recurso no encontrado: " + isbn);
+            throw new RecursoNoEncontradoException("Recurso no encontrado: " + isbn);
         }
 
         Optional<Socio> socioOpt = socioRepo.buscarPorId(dni);
         if (socioOpt.isEmpty()) {
-            throw new BibliotecaException("Socio no encontrado: " + dni);
+            throw new SocioNoEncontradoException("Socio no encontrado: " + dni);
         }
 
         Recurso recurso = recursoOpt.get();
@@ -41,7 +45,7 @@ public class PrestamoService {
         boolean recursoDisponible = prestamoRepo.buscarTodos().stream()
                 .noneMatch(p -> p.recurso().isbn().equals(recurso.isbn()) && !p.fechaFin().isBefore(LocalDate.now()));
         if (!recursoDisponible) {
-            throw new BibliotecaException("El recurso no esta disponible.");
+            throw new RecursoNoDisponibleException("El recurso no esta disponible.");
         }
 
         long prestamosActivos = prestamoRepo.buscarTodos().stream()
@@ -49,7 +53,7 @@ public class PrestamoService {
                 .filter(p -> !p.fechaFin().isBefore(LocalDate.now()))
                 .count();
         if (prestamosActivos >= socio.maxPrestamos()) {
-            throw new BibliotecaException("El socio alcanzo el limite de prestamos.");
+            throw new LimitePrestamosException("El socio alcanzo el limite de prestamos.");
         }
 
         LocalDate fechaInicio = LocalDate.now();
