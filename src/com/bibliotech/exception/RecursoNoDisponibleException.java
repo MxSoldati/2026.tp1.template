@@ -1,0 +1,8 @@
+package com.bibliotech.exception;
+
+public class RecursoNoDisponibleException extends BibliotecaException {
+    public RecursoNoDisponibleException(String message) {
+        super(message);
+    }
+}
+
