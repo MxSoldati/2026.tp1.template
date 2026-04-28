@@ -30,4 +30,10 @@ public class RecursoRepository implements Repository<Recurso, String> {
                 .filter(recurso -> recurso.titulo().toLowerCase().contains(titulo.toLowerCase()))
                 .toList();
     }
+
+    public List<Recurso> buscarPorCategoria(String categoria) {
+        return recursos.stream()
+                .filter(recurso -> recurso.categoria().equalsIgnoreCase(categoria))
+                .toList();
+    }
 }
