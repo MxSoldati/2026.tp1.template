@@ -15,4 +15,9 @@ public record Docente(
                 throw new IllegalArgumentException("El docente debe presentar un email válido.");
             }
         }
+
+        @Override
+        public int maxPrestamos() {
+            return 5;
+        }
 }

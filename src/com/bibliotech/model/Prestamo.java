@@ -3,6 +3,7 @@ package com.bibliotech.model;
 import java.time.LocalDate;
 
 public record Prestamo(
+        Long id,
         Recurso recurso,
         Socio socio,
         LocalDate fechaInicio,
