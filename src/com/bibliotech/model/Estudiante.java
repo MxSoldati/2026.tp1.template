@@ -14,4 +14,9 @@ public record Estudiante(
             throw new IllegalArgumentException("Error: El email del estudiante debe contener un '@'.");
         }
     }
+
+    @Override
+    public int maxPrestamos() {
+        return 3;
+    }
 }

@@ -1,31 +1,28 @@
 package com.bibliotech.repository;
 
-
 import com.bibliotech.model.Socio;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-public class SocioRepository {
+public class SocioRepository implements Repository<Socio, String> {
     private final List<Socio> socios = new ArrayList<>();
 
+    @Override
     public void guardar(Socio socio) {
         socios.add(socio);
     }
 
-    public List<Socio> obtenerTodos() {
+    @Override
+    public Optional<Socio> buscarPorId(String dni) {
+        return socios.stream()
+                .filter(socio -> socio.dni().equals(dni))
+                .findFirst();
+    }
+
+    @Override
+    public List<Socio> buscarTodos() {
         return new ArrayList<>(socios);
     }
-    public java.util.Optional<Socio> buscarPorDni(String dni) {
-        // Recorremos la lista uno por uno
-        for (Socio socio : socios) {
-            // Si el DNI coincide, lo envolvemos en un Optional y lo devolvemos
-            if (socio.dni().equals(dni)) {
-                return java.util.Optional.of(socio);
-            }
-        }
-        // Si termina el ciclo y no encontró nada, devolvemos un Optional vacío
-        return java.util.Optional.empty();
-    }
 }
-

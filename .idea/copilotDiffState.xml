@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CopilotDiffPersistence">
+    <option name="pendingDiffs">
+      <map>
+        <entry key="/Docente (snapshot).java">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="/Docente (snapshot).java" />
+              <option name="originalContent" value="package com.bibliotech.model;&#10;&#10;public record Docente(&#10;        String dni,&#10;        String nombre,&#10;        String email&#10;&#10;) implements Socio{&#10;        //constructor para las validaciones&#10;        public Docente {&#10;            if (dni == null || dni.isEmpty()) {&#10;                throw new IllegalArgumentException(&quot;El docente debe presentar un DNI válido.&quot;);&#10;            }&#10;            if (email == null || !email.contains(&quot;@&quot;)) {&#10;                throw new IllegalArgumentException(&quot;El docente debe presentar un email válido.&quot;);&#10;            }&#10;        }&#10;}&#10;" />
+              <option name="updatedContent" value="package com.bibliotech.model;&#10;&#10;public record Docente(&#10;        String dni,&#10;        String nombre,&#10;        String email&#10;&#10;) implements Socio{&#10;        //constructor para las validaciones&#10;        public Docente {&#10;            if (dni == null || dni.isEmpty()) {&#10;                throw new IllegalArgumentException(&quot;El docente debe presentar un DNI válido.&quot;);&#10;            }&#10;            if (email == null || !email.contains(&quot;@&quot;)) {&#10;                throw new IllegalArgumentException(&quot;El docente debe presentar un email válido.&quot;);&#10;            }&#10;        }&#10;&#10;        @Override&#10;        public int maxPrestamos() {&#10;            return 5;&#10;        }&#10;}" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+        <entry key="/Estudiante (snapshot).java">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="/Estudiante (snapshot).java" />
+              <option name="originalContent" value="package com.bibliotech.model;&#10;&#10;public record Estudiante(&#10;        String dni,&#10;        String nombre,&#10;        String email&#10;) implements Socio {&#10;    //constructor para las validaciones&#10;    public Estudiante {&#10;        if (dni == null || dni.isBlank()) {&#10;            throw new IllegalArgumentException(&quot;Error: El DNI es obligatorio y no puede estar vacío.&quot;);&#10;        }&#10;        if (email == null || !email.contains(&quot;@&quot;)) {&#10;            throw new IllegalArgumentException(&quot;Error: El email del estudiante debe contener un '@'.&quot;);&#10;        }&#10;    }&#10;}&#10;" />
+              <option name="updatedContent" value="package com.bibliotech.model;&#10;&#10;public record Estudiante(&#10;        String dni,&#10;        String nombre,&#10;        String email&#10;) implements Socio {&#10;    //constructor para las validaciones&#10;    public Estudiante {&#10;        if (dni == null || dni.isBlank()) {&#10;            throw new IllegalArgumentException(&quot;Error: El DNI es obligatorio y no puede estar vacío.&quot;);&#10;        }&#10;        if (email == null || !email.contains(&quot;@&quot;)) {&#10;            throw new IllegalArgumentException(&quot;Error: El email del estudiante debe contener un '@'.&quot;);&#10;        }&#10;    }&#10;&#10;    @Override&#10;    public int maxPrestamos() {&#10;        return 3;&#10;    }&#10;}" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+        <entry key="/Socio (snapshot).java">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="/Socio (snapshot).java" />
+              <option name="originalContent" value="package com.bibliotech.model;&#10;&#10;import com.sun.source.doctree.EscapeTree;&#10;&#10;public interface Socio {&#10;    String dni();&#10;    String nombre();&#10;    String email();&#10;}&#10;" />
+              <option name="updatedContent" value="package com.bibliotech.model;&#10;&#10;public interface Socio {&#10;    String dni();&#10;    String nombre();&#10;    String email();&#10;    int maxPrestamos();&#10;}" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+        <entry key="/SocioRepository (snapshot).java">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="/SocioRepository (snapshot).java" />
+              <option name="originalContent" value="package com.bibliotech.repository;&#10;&#10;&#10;import com.bibliotech.model.Socio;&#10;&#10;import java.util.ArrayList;&#10;import java.util.List;&#10;&#10;public class SocioRepository {&#10;    private final List&lt;Socio&gt; socios = new ArrayList&lt;&gt;();&#10;&#10;    public void guardar(Socio socio) {&#10;        socios.add(socio);&#10;    }&#10;&#10;    public List&lt;Socio&gt; obtenerTodos() {&#10;        return new ArrayList&lt;&gt;(socios);&#10;    }&#10;    public java.util.Optional&lt;Socio&gt; buscarPorDni(String dni) {&#10;        // Recorremos la lista uno por uno&#10;        for (Socio socio : socios) {&#10;            // Si el DNI coincide, lo envolvemos en un Optional y lo devolvemos&#10;            if (socio.dni().equals(dni)) {&#10;                return java.util.Optional.of(socio);&#10;            }&#10;        }&#10;        // Si termina el ciclo y no encontró nada, devolvemos un Optional vacío&#10;        return java.util.Optional.empty();&#10;    }&#10;}&#10;&#10;" />
+              <option name="updatedContent" value="package com.bibliotech.repository;&#10;&#10;import com.bibliotech.model.Socio;&#10;&#10;import java.util.ArrayList;&#10;import java.util.List;&#10;import java.util.Optional;&#10;&#10;public class SocioRepository implements Repository&lt;Socio, String&gt; {&#10;    private final List&lt;Socio&gt; socios = new ArrayList&lt;&gt;();&#10;&#10;    @Override&#10;    public void guardar(Socio socio) {&#10;        socios.add(socio);&#10;    }&#10;&#10;    @Override&#10;    public Optional&lt;Socio&gt; buscarPorId(String dni) {&#10;        return socios.stream()&#10;                .filter(socio -&gt; socio.dni().equals(dni))&#10;                .findFirst();&#10;    }&#10;&#10;    @Override&#10;    public List&lt;Socio&gt; buscarTodos() {&#10;        return new ArrayList&lt;&gt;(socios);&#10;    }&#10;}" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+        <entry key="/SocioService (snapshot).java">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="/SocioService (snapshot).java" />
+              <option name="originalContent" value="package com.bibliotech.service;&#10;&#10;public class SocioService {&#10;}&#10;" />
+              <option name="updatedContent" value="package com.bibliotech.service;&#10;&#10;import com.bibliotech.model.Socio;&#10;import com.bibliotech.repository.Repository;&#10;import java.util.List;&#10;import java.util.Optional;&#10;&#10;public class SocioService {&#10;    private final Repository&lt;Socio, String&gt; socioRepo;&#10;&#10;    public SocioService(Repository&lt;Socio, String&gt; socioRepo) {&#10;        this.socioRepo = socioRepo;&#10;    }&#10;&#10;    public void registrar(Socio socio) {&#10;        socioRepo.guardar(socio);&#10;    }&#10;&#10;    public Optional&lt;Socio&gt; buscarPorDni(String dni) {&#10;        return socioRepo.buscarPorId(dni);&#10;    }&#10;&#10;    public List&lt;Socio&gt; buscarTodos() {&#10;        return socioRepo.buscarTodos();&#10;    }&#10;}" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
