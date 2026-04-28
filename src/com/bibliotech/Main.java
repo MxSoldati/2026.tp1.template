@@ -1,14 +1,11 @@
 package com.bibliotech;
-import com.bibliotech.model.Ebook;
-import com.bibliotech.model.LibroFisico;
-import com.bibliotech.model.Recurso;
+import com.bibliotech.model.Docente;
+import com.bibliotech.model.Estudiante;
+import com.bibliotech.model.Socio;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Iniciando prueba de dominio (Issue 2)...\n");
+        System.out.println("--- TEST ISSUE 2.2 y 2.3: SOCIOS Y VALIDACIONES ---\n");
 
     }
 }
-
