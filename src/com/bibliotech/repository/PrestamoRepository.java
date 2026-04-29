@@ -11,6 +11,12 @@ public class PrestamoRepository implements Repository<Prestamo, Long> {
 
     @Override
     public void guardar(Prestamo prestamo) {
+        for (int i = 0; i < prestamos.size(); i++) {
+            if (prestamos.get(i).id().equals(prestamo.id())) {
+                prestamos.set(i, prestamo);
+                return;
+            }
+        }
         prestamos.add(prestamo);
     }
 
