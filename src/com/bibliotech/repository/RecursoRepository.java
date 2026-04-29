@@ -10,6 +10,12 @@ public class RecursoRepository implements Repository<Recurso, String> {
 
     @Override
     public void guardar(Recurso recurso) {
+        for (int i = 0; i < recursos.size(); i++) {
+            if (recursos.get(i).isbn().equals(recurso.isbn())) {
+                recursos.set(i, recurso);
+                return;
+            }
+        }
         recursos.add(recurso);
     }
 

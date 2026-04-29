@@ -11,6 +11,12 @@ public class SocioRepository implements Repository<Socio, String> {
 
     @Override
     public void guardar(Socio socio) {
+        for (int i = 0; i < socios.size(); i++) {
+            if (socios.get(i).dni().equals(socio.dni())) {
+                socios.set(i, socio);
+                return;
+            }
+        }
         socios.add(socio);
     }
 
