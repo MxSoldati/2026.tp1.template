@@ -28,3 +28,5 @@ public class SocioService {
         return socioRepo.buscarTodos();
     }
 }
+
+
