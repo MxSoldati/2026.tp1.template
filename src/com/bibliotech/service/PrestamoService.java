@@ -43,14 +43,14 @@ public class PrestamoService {
         Socio socio = socioOpt.get();
 
         boolean recursoDisponible = prestamoRepo.buscarTodos().stream()
-                .noneMatch(p -> p.recurso().isbn().equals(recurso.isbn()) && !p.fechaFin().isBefore(LocalDate.now()));
+                .noneMatch(p -> p.recurso().isbn().equals(recurso.isbn()) && p.fechaDevolucion().isEmpty());
         if (!recursoDisponible) {
             throw new RecursoNoDisponibleException("El recurso no esta disponible.");
         }
 
         long prestamosActivos = prestamoRepo.buscarTodos().stream()
                 .filter(p -> p.socio().dni().equals(socio.dni()))
-                .filter(p -> !p.fechaFin().isBefore(LocalDate.now()))
+                .filter(p -> p.fechaDevolucion().isEmpty())
                 .count();
         if (prestamosActivos >= socio.maxPrestamos()) {
             throw new LimitePrestamosException("El socio alcanzo el limite de prestamos.");
@@ -58,7 +58,7 @@ public class PrestamoService {
 
         LocalDate fechaInicio = LocalDate.now();
         LocalDate fechaFin = fechaInicio.plusDays(14);
-        Prestamo prestamo = new Prestamo(nextPrestamoId++, recurso, socio, fechaInicio, fechaFin);
+        Prestamo prestamo = new Prestamo(nextPrestamoId++, recurso, socio, fechaInicio, fechaFin, Optional.empty());
         prestamoRepo.guardar(prestamo);
         return prestamo;
     }
@@ -70,6 +70,20 @@ public class PrestamoService {
         }
 
         Prestamo prestamo = prestamoOpt.get();
+        if (prestamo.fechaDevolucion().isPresent()) {
+            throw new BibliotecaException("El prestamo ya fue devuelto: " + prestamoId);
+        }
+
+        Prestamo actualizado = new Prestamo(
+                prestamo.id(),
+                prestamo.recurso(),
+                prestamo.socio(),
+                prestamo.fechaInicio(),
+                prestamo.fechaFin(),
+                Optional.of(fechaDevolucion)
+        );
+        prestamoRepo.guardar(actualizado);
+
         if (!fechaDevolucion.isAfter(prestamo.fechaFin())) {
             return 0;
         }
